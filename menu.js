@@ -29,8 +29,8 @@ var Menu = function(element, options){
     
     var rules = [
       [0,"{-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transform-timing-function: ease-out; }"],
-      [(delay + 10), "{ -webkit-transform: translate3d(0px, 0px, 0px);}"],
-      [(40 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transform-timing-function: ease-in; }"],
+      [(delay + 15), "{ -webkit-transform: translate3d(0px, 0px, 0px);}"],
+      [(45 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transform-timing-function: ease-in; }"],
       [65, "{ -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-timing-function:ease-in-out}"],
       [100, "{ -webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);}"]
     ];
@@ -102,7 +102,7 @@ Menu.prototype.close = function(){
     var item = animation[0];
     var closed = animation[2];
     var link = item.querySelector('a');
-    item.style.webkitAnimation = closed + " 500ms";
+    item.style.webkitAnimation = closed + " 700ms";
     item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform ="rotate(360deg)" ;
   })
@@ -118,7 +118,7 @@ Menu.prototype.open = function(){
         open = animation[1],
         link = item.querySelector('a');
         
-    item.style.webkitAnimation = open + " 700ms";
+    item.style.webkitAnimation = open + " 800ms";
     item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform = 'rotate(-360deg)';
     
