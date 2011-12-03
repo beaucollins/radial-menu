@@ -11,16 +11,15 @@ var Menu = function(element, options){
   this.button = element.querySelector('a');
   this.state = 'closed';
   this.animations = [];
-
+  
   var sheet = document.styleSheets[0];
   var degrees = options.degrees;
   var radius = options.radius;
   var offset = options.offset;
   var menu = this;
-  //this.positionItems();
-  // lets position them
+  
   this.eachItem(function(item, index, items){
-    // create the animation
+    
     var degree = ((degrees / (items.length-1)) * index) + offset,
         position = Menu.degreeToPosition(degree),
         x = Math.round((position.x * radius)),
@@ -104,7 +103,7 @@ Menu.prototype.close = function(){
     var closed = animation[2];
     var link = item.querySelector('a');
     item.style.webkitAnimation = closed + " 500ms";
-    item.style.webkitAnimationFillMode = 'end';
+    item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform ="rotate(360deg)" ;
   })
 }
@@ -120,7 +119,7 @@ Menu.prototype.open = function(){
         link = item.querySelector('a');
         
     item.style.webkitAnimation = open + " 700ms";
-    item.style.webkitAnimationFillMode = 'end';
+    item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform = 'rotate(-360deg)';
     
   });
