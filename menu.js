@@ -9,7 +9,8 @@ var Menu = function(element, options){
   this.node = element;
   this.menu_items = element.querySelectorAll('li');
   this.button = element.querySelector('a');
-  this.open = false;
+  this.state = 'closed';
+  this.animations = [];
 
   var sheet = document.styleSheets[0];
   var degrees = options.degrees;
@@ -25,24 +26,29 @@ var Menu = function(element, options){
         x = Math.round((position.x * radius)),
         y = Math.round((position.y * radius)),
         name = "ani-" + index,
-        delay = index * 4;
+        delay = index * 6;
     
-    var rule = "@-webkit-keyframes " + name + "{ \
-       from {-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transform-timing-function: ease-out; }\
-       " + (delay + 10) + "% { -webkit-transform: translate3d(0px, 0px, 0px);}\
-       " + (40 + index * 3) + "% { -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transform-timing-function: ease-in; }\
-       65% { -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-timing-function:ease-in-out}\
-       to { -webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);}\
-       }";
+    var rules = [
+      [0,"{-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transform-timing-function: ease-out; }"],
+      [(delay + 10), "{ -webkit-transform: translate3d(0px, 0px, 0px);}"],
+      [(40 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transform-timing-function: ease-in; }"],
+      [65, "{ -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-timing-function:ease-in-out}"],
+      [100, "{ -webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);}"]
+    ];
     
+    var open = "", reverse = "";
+    rules.forEach(function(rule){
+      open += rule[0] + '% ' + rule[1];
+      reverse = (100-rule[0]) + '% ' + rule[1] + reverse;
+    }, this);
+    
+    open = "@-webkit-keyframes " + name + "-open { " + open + "} ";
+    reverse = "@-webkit-keyframes " + name + "-close { " + reverse + "}" ;
 
-    sheet.insertRule(rule);
-    item.style.webkitAnimation = name + " 700ms alternate infinite";
-    item.style.webkitAnimationPlayState = "paused";
+    sheet.insertRule(open);
+    sheet.insertRule(reverse);
     item.querySelector('a').style.webkitTransition = '-webkit-transform 500ms ease-in-out';
-    item.addEventListener('webkitAnimationIteration', function(e){
-      item.style.webkitAnimationPlayState = 'paused';
-    });
+    this.animations.push([item, name+'-open', name+"-close"]);
   });
   
   this.button.style.webkitTransition = "-webkit-transform 100ms linear";
@@ -81,22 +87,57 @@ var Menu = function(element, options){
 }
 
 Menu.prototype.toggle = function(){
-  this.open = !this.open;
-  if(this.open){
-    this.button.style.webkitTransform = 'rotate(-45deg)';
+  if(this.isOpen()){
+    this.close();
   } else {
-    this.button.style.webkitTransform = 'rotate(0deg)';
-  }
-  this.eachItem(function(item){
-    item.style.webkitAnimationPlayState = 'running';
-    var link = item.querySelector('a');
-    link.style.webkitTransform = this.open ? 'rotate(-360deg)' : "rotate(360deg)" ;
-  });
+    this.open();
+  }  
+}
+
+Menu.prototype.close = function(){
+  this.state = 'closed';
+  this.button.style.webkitTransform = 'rotate(0deg)';
   
+  this.eachAnimation(function(animation){
+    var item = animation[0];
+    var closed = animation[2];
+    var link = item.querySelector('a');
+    item.style.webkitAnimation = closed + " 500ms";
+    item.style.webkitAnimationFillMode = 'both';
+    link.style.webkitTransform ="rotate(360deg)" ;
+  })
+}
+
+Menu.prototype.open = function(){
+  this.state = 'open';
+  this.button.style.webkitTransform = 'rotate(-45deg)';
+  
+  this.eachAnimation(function(animation){
+    var item = animation[0],
+        open = animation[1],
+        link = item.querySelector('a');
+        
+    item.style.webkitAnimation = open + " 700ms";
+    item.style.webkitAnimationFillMode = 'both';
+    link.style.webkitTransform = 'rotate(-360deg)';
+    
+  });
+}
+
+Menu.prototype.isOpen = function(){
+  return this.state == 'open';
+}
+
+Menu.prototype.isClosed = function(){
+  return !this.isOpen();
 }
 
 Menu.prototype.eachItem = function(callback){
   Array.prototype.forEach.call(this.menu_items, callback, this);
+}
+
+Menu.prototype.eachAnimation = function(callback){
+  this.animations.forEach(callback, this);
 }
 
 Menu.degreeToRadian = function(degree){
