@@ -95,6 +95,7 @@ Menu.prototype.toggle = function(){
 }
 
 Menu.prototype.close = function(){
+  if(this.isClosed()) return;
   this.state = 'closed';
   this.button.style.webkitTransform = 'rotate(0deg)';
   
@@ -103,12 +104,13 @@ Menu.prototype.close = function(){
     var closed = animation[2];
     var link = item.querySelector('a');
     item.style.webkitAnimation = closed + " 500ms";
-    item.style.webkitAnimationFillMode = 'both';
+    item.style.webkitAnimationFillMode = 'end';
     link.style.webkitTransform ="rotate(360deg)" ;
   })
 }
 
 Menu.prototype.open = function(){
+  if(this.isOpen()) return;
   this.state = 'open';
   this.button.style.webkitTransform = 'rotate(-45deg)';
   
@@ -118,7 +120,7 @@ Menu.prototype.open = function(){
         link = item.querySelector('a');
         
     item.style.webkitAnimation = open + " 700ms";
-    item.style.webkitAnimationFillMode = 'both';
+    item.style.webkitAnimationFillMode = 'end';
     link.style.webkitTransform = 'rotate(-360deg)';
     
   });
