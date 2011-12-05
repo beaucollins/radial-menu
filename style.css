@@ -1,7 +1,7 @@
 body {
     font-size: 12px;
     font-family: "Helvetica Neue", HelveticaNeue, Helvetica;
-    background:-webkit-linear-gradient(hsla(0,50%,99%,1.0), hsla(0,50%,95%,1.0));
+    background: url(texture.jpg);
     margin: 0;
 }
 
@@ -37,23 +37,72 @@ a[href^="http://github.com/"]:focus {
     left:0;
     overflow:scroll;
     -webkit-overflow-scrolling: touch;
-    background: url(texture.jpg);
-    padding: 20px;
-    color: #FFF;
+    background: url(circles.png) no-repeat bottom left;
+    padding: 30px;
+    color: #222;
     line-height: 1.5;
     font-size: 16px;
+    text-shadow: 0 1px 0 hsla(0,0%,100%,0.3);
+}
+
+#app a {
+    background: hsla(0,0%,100%,0.5);
+    border: 1px solid hsla(0,0%,100%,0.6);
+    border-radius:2px;
+    padding: 0 3px;
+    color: #333;
+}
+
+h1 {
+    margin: 20px 0;
+    padding: 0;
+    font-weight: normal;
+    text-shadow: 0 1px 0 hsla(0,0%,100%,0.5);
+}
+
+h2 {
+    margin: 40px 0 10px;
+    padding:0;
+    font-weight: normal;
+    text-shadow: 0 1px 0 hsla(0,0%,100%,0.5);
+}
+
+pre {
+    background: hsla(0,0%,100%,0.3);
+    border-radius: 2px;
+    border: 1px solid hsla(0,0%,100%,0.35);
+    padding: 20px;
+    margin: 20px 0;
+    overflow: scroll;
+}
+
+p {
+    margin: 20px 0;
+    padding: 0;
 }
 
 @media screen and (-webkit-device-pixel-ratio:2) {    
     #app {
+        background: url(circles@2x.png) no-repeat bottom left;
+        background-size: 400px 400px;
+    }
+    
+    body {
         background: url(wood@2x.jpg);
+        background-size: 320px 480px;
     }
 }
 
 @media screen and (-webkit-device-pixel-ratio:1) and (max-device-width:480px) {
     #app {
-        background: url(wood.jpg);
+        background: url(circles.png) no-repeat bottom left;
     }
+    
+    body {
+        background: url(wood@2x.jpg);
+        background-size: 320px 480px;
+    }
+    
 }
 
 nav {
@@ -106,8 +155,8 @@ nav li a {
     border: 3px solid #FFF;
     box-shadow: inset 0 0 4px hsla(0,0%,0%,1.0), 0 0 2px hsla(0,0%,0%,0.6);
     text-shadow: 0 0 2px hsla(0,0%,0%,1.0);
-    width: 26px;
-    height: 26px;
+    width: 27px;
+    height: 27px;
     background:#444;
     position: absolute;
     top:0;
@@ -119,6 +168,5 @@ nav li a {
     text-align: center;
     text-decoration:none;
     font-weight:bold;
-    -webkit-animation: bounce 1s;
 }
 
