@@ -28,10 +28,10 @@ var Menu = function(element, options){
         delay = index * 6;
     
     var rules = [
-      [0,"{-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transform-timing-function: ease-out; }"],
+      [0,"{-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transition-timing-function: ease-out; }"],
       [(delay + 15), "{ -webkit-transform: translate3d(0px, 0px, 0px);}"],
-      [(45 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transform-timing-function: ease-in; }"],
-      [65, "{ -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-timing-function:ease-in-out}"],
+      [(45 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transition-timing-function: ease-in; }"],
+      [65, "{ -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-transition-timing-function:ease-in-out}"],
       [100, "{ -webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);}"]
     ];
     
