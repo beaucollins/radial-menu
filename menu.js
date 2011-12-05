@@ -24,33 +24,56 @@ var Menu = function(element, options){
         position = Menu.degreeToPosition(degree),
         x = Math.round((position.x * radius)),
         y = Math.round((position.y * radius)),
-        name = "ani-" + index,
+        name = "ani" + index,
         delay = index * 6;
     
     var rules = [
-      [0,"{-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transition-timing-function: ease-out; }"],
-      [(delay + 15), "{ -webkit-transform: translate3d(0px, 0px, 0px);}"],
-      [(45 + index * 3),"{ -webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transition-timing-function: ease-in; }"],
-      [65, "{ -webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-transition-timing-function:ease-in-out}"],
-      [100, "{ -webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);}"]
+      [0,"-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transition-timing-function: ease-out;"],
+      [(delay + 15), "-webkit-transform: translate3d(0px, 0px, 0px);"],
+      [(45 + index * 3),"-webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transition-timing-function: ease-in;"],
+      [65, "-webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-transition-timing-function:ease-in-out;"],
+      [100, "-webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);"]
+    ];
+    var rules_moz = [
+      [0,"-moz-transform: translate(0px, 0px); -moz-transition-timing-function: ease-out;"],
+      [(delay + 15), "-moz-transform: translate(0px, 0px);"],
+      [(45 + index * 3),"-moz-transform: translate(" + (x * 1.2) + "px, " + (y * 1.2) + "px); -moz-transition-timing-function: ease-in;"],
+      [65, "-moz-transform: translate(" + (x*0.95) + "px, " + (y*0.95) + "px); -moz-transition-timing-function:ease-in-out;"],
+      [100, "-moz-transform: translate(" + x + "px, " + y + "px);"]
     ];
     
-    var open = "", reverse = "";
+    
+    var open = "", reverse = "", open_moz = "", reverse_moz = "";
     rules.forEach(function(rule){
-      open += rule[0] + '% ' + rule[1];
-      reverse = (100-rule[0]) + '% ' + rule[1] + reverse;
+      open += rule[0] + '% {' + rule[1] + "}\n";
+      reverse = (100-rule[0]) + '% {' + rule[1] + " }\n" + reverse;
+    }, this);
+    rules_moz.forEach(function(rule){
+      open_moz += rule[0] + '% {' + rule[1] + "}\n";
+      reverse_moz = (100-rule[0]) + '% {' + rule[1] + " }\n" + reverse_moz;
     }, this);
     
-    open = "@-webkit-keyframes " + name + "-open { " + open + "} ";
-    reverse = "@-webkit-keyframes " + name + "-close { " + reverse + "}" ;
-
-    sheet.insertRule(open);
-    sheet.insertRule(reverse);
-    item.querySelector('a').style.webkitTransition = '-webkit-transform 500ms ease-in-out';
-    this.animations.push([item, name+'-open', name+"-close"]);
+    open_moz = "@-moz-keyframes " + name + "open {\n " + open_moz + "} ";
+    reverse_moz = "@-moz-keyframes " + name + "close {\n " + reverse_moz + "}" ;
+    open = "@-webkit-keyframes " + name + "open { " + open + "} ";
+    reverse = "@-webkit-keyframes " + name + "close { " + reverse + "}" ;
+    
+    try {
+      sheet.insertRule(open, 0);
+      sheet.insertRule(reverse, 0);
+    } catch(e) {
+      sheet.insertRule(open_moz, 0);
+      sheet.insertRule(reverse_moz, 0);
+    }
+    
+    var link = item.querySelector('a');
+    link.style.webkitTransition = '-webkit-transform 500ms ease-in-out';
+    link.style.MozTransition = "-moz-transform 500ms ease-in-out";
+    this.animations.push([item, name+'open', name+"close"]);
   });
   
   this.button.style.webkitTransition = "-webkit-transform 100ms linear";
+  this.button.style.MozTransition = "-moz-transform 100ms linear";
   if(this.button.ontouchstart !== undefined){
     this.button.addEventListener('touchstart', function(e){
       e.stopPropagation();
@@ -97,6 +120,7 @@ Menu.prototype.close = function(){
   if(this.isClosed()) return;
   this.state = 'closed';
   this.button.style.webkitTransform = 'rotate(0deg)';
+  this.button.style.MozTransform = 'rotate(0deg)';
   
   this.eachAnimation(function(animation){
     var item = animation[0];
@@ -105,6 +129,8 @@ Menu.prototype.close = function(){
     item.style.webkitAnimation = closed + " 700ms";
     item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform ="rotate(360deg)" ;
+    item.style.MozAnimation = '700ms ease 0s normal both 1 ' + closed;
+    link.style.MozTransform = "rotate(360deg)" ;
   })
 }
 
@@ -112,7 +138,7 @@ Menu.prototype.open = function(){
   if(this.isOpen()) return;
   this.state = 'open';
   this.button.style.webkitTransform = 'rotate(-45deg)';
-  
+  this.button.style.MozTransform = 'rotate(-45deg)';
   this.eachAnimation(function(animation){
     var item = animation[0],
         open = animation[1],
@@ -121,6 +147,9 @@ Menu.prototype.open = function(){
     item.style.webkitAnimation = open + " 800ms";
     item.style.webkitAnimationFillMode = 'both';
     link.style.webkitTransform = 'rotate(-360deg)';
+    item.style.MozAnimation = open + " 800ms";
+    item.style.MozAnimationFillMode = 'both';
+    link.style.MozTransform = 'rotate(-360deg)';
     
   });
 }
