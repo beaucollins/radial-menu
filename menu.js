@@ -2,9 +2,10 @@ var Menu = function(element, options){
   if(!options) options = {};
   options = {
     degrees: options.degrees || 90,
-    offset: options.degrees || -90,
+    offset: options.offset || -90,
     radius: options.radius || 150
   }
+  
   
   this.node = element;
   this.menu_items = element.querySelectorAll('li');
