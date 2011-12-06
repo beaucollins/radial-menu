@@ -1,7 +1,7 @@
 body {
     font-size: 12px;
     font-family: "Helvetica Neue", HelveticaNeue, Helvetica;
-    background: url(texture.jpg);
+    background: rgb(155,141,113) url(texture.jpg);
     margin: 0;
     overflow: auto;
 }
@@ -88,10 +88,11 @@ p {
     #app {
         background: url(circles@2x.png) no-repeat bottom left;
         background-size: 400px 400px;
+        padding-bottom: 40px;
     }
     
     body {
-        background: url(wood@2x.jpg);
+        background: rgb(155,141,113) url(wood@2x.jpg);
         background-size: 320px 480px;
     }
 }
@@ -99,10 +100,11 @@ p {
 @media screen and (-webkit-device-pixel-ratio:1) and (max-device-width:480px) {
     #app {
         background: url(circles.png) no-repeat bottom left;
+        padding-bottom: 40px;
     }
     
     body {
-        background: url(wood@2x.jpg);
+        background:rgb(155,141,113) url(wood@2x.jpg);
         background-size: 320px 480px;
     }
     
