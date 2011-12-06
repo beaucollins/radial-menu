@@ -3,7 +3,7 @@ Radial Menu
 
 An HTML/CSS/JavaScript implementation of the lovely radial menu in the [Path][] app.
 
-[See the demo][demo] (requires a webkit browser)
+[See the demo][demo] (works best on Safari, Chrome does pretty well, Firefox is pretty blah)
 
 [demo]: http://beaucollins.github.com/radial-menu
 [Path]: https://path.com/
