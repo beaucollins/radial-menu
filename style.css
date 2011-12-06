@@ -3,6 +3,7 @@ body {
     font-family: "Helvetica Neue", HelveticaNeue, Helvetica;
     background: url(texture.jpg);
     margin: 0;
+    overflow: auto;
 }
 
 a[href^="http://github.com/"] {
@@ -37,7 +38,7 @@ a[href^="http://github.com/"]:focus {
     bottom:0;
     right:0;
     left:0;
-    overflow:scroll;
+    overflow:auto;
     -webkit-overflow-scrolling: touch;
     background: url(circles.png) no-repeat bottom left;
     padding: 30px;
