@@ -14,31 +14,33 @@ var Menu = function(element, options){
   this.animations = [];
   
   var sheet = document.styleSheets[0];
-  var degrees = options.degrees;
+  var degrees = Math.max(Math.min(360, options.degrees), 0);
   var radius = options.radius;
   var offset = options.offset;
   var menu = this;
-  
+  var positions = degrees == 360 ? this.menu_items.length : this.menu_items.length - 1;
+  this.guid = Menu.guid();
   this.eachItem(function(item, index, items){
     
-    var degree = ((degrees / (items.length-1)) * index) + offset,
+    var degree = (((degrees / positions) * index) + offset) % 360,
         position = Menu.degreeToPosition(degree),
         x = Math.round((position.x * radius)),
         y = Math.round((position.y * radius)),
-        name = "ani" + index,
-        delay = index * 6;
-    
+        guid = this.guid  + '-' + index,
+        delay = (30/items.length) * index,
+        delay2 = (20/items.length) * index
+        
     var rules = [
       [0,"-webkit-transform: translate3d(0px, 0px, 0px); -webkit-transition-timing-function: ease-out;"],
       [(delay + 15), "-webkit-transform: translate3d(0px, 0px, 0px);"],
-      [(45 + index * 3),"-webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transition-timing-function: ease-in;"],
+      [(45 + delay2),"-webkit-transform: translate3d(" + (x * 1.2) + "px, " + (y * 1.2) + "px, 0px); -webkit-transition-timing-function: ease-in;"],
       [65, "-webkit-transform: translate3d(" + (x*0.95) + "px, " + (y*0.95) + "px, 0px); -webkit-transition-timing-function:ease-in-out;"],
       [100, "-webkit-transform: translate3d(" + x + "px, " + y + "px, 0px);"]
     ];
     var rules_moz = [
       [0,"-moz-transform: translate(0px, 0px); -moz-transition-timing-function: ease-out;"],
       [(delay + 15), "-moz-transform: translate(0px, 0px);"],
-      [(45 + index * 3),"-moz-transform: translate(" + (x * 1.2) + "px, " + (y * 1.2) + "px); -moz-transition-timing-function: ease-in;"],
+      [(45 + delay2),"-moz-transform: translate(" + (x * 1.2) + "px, " + (y * 1.2) + "px); -moz-transition-timing-function: ease-in;"],
       [65, "-moz-transform: translate(" + (x*0.95) + "px, " + (y*0.95) + "px); -moz-transition-timing-function:ease-in-out;"],
       [100, "-moz-transform: translate(" + x + "px, " + y + "px);"]
     ];
@@ -54,12 +56,13 @@ var Menu = function(element, options){
       reverse_moz = (100-rule[0]) + '% {' + rule[1] + " }\n" + reverse_moz;
     }, this);
     
-    open_moz = "@-moz-keyframes " + name + "open {\n " + open_moz + "} ";
-    reverse_moz = "@-moz-keyframes " + name + "close {\n " + reverse_moz + "}" ;
-    open = "@-webkit-keyframes " + name + "open { " + open + "} ";
-    reverse = "@-webkit-keyframes " + name + "close { " + reverse + "}" ;
+    open_moz = "@-moz-keyframes " + guid + "open {\n " + open_moz + "} ";
+    reverse_moz = "@-moz-keyframes " + guid + "close {\n " + reverse_moz + "}" ;
+    open = "@-webkit-keyframes " + guid + "open { " + open + "} ";
+    reverse = "@-webkit-keyframes " + guid + "close { " + reverse + "}" ;
     
     try {
+      console.log(open);
       sheet.insertRule(open, 0);
       sheet.insertRule(reverse, 0);
     } catch(e) {
@@ -70,7 +73,7 @@ var Menu = function(element, options){
     var link = item.querySelector('a');
     link.style.webkitTransition = '-webkit-transform 500ms ease-in-out';
     link.style.MozTransition = "-moz-transform 500ms ease-in-out";
-    this.animations.push([item, name+'open', name+"close"]);
+    this.animations.push([item, guid+'open', guid+"close"]);
   });
   
   this.button.style.webkitTransition = "-webkit-transform 100ms linear";
@@ -107,6 +110,15 @@ var Menu = function(element, options){
     })
   };
   
+}
+
+Menu.guid = function(){
+  if (this.menu_count === undefined) {
+    this.menu_count = 0;
+  } else {
+    this.menu_count ++;
+  }
+  return "ani" + this.menu_count;
 }
 
 Menu.prototype.toggle = function(){
