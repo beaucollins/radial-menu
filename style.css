@@ -48,7 +48,7 @@ a[href^="http://github.com/"]:focus {
     text-shadow: 0 1px 0 hsla(0,0%,100%,0.3);
 }
 
-#app a {
+#app p a {
     background: hsla(0,0%,100%,0.5);
     border: 1px solid hsla(0,0%,100%,0.6);
     border-radius:2px;
@@ -108,11 +108,16 @@ p {
     
 }
 
-nav {
+nav#arc {
     position:fixed;
     bottom: 30px;
     left: 30px;
     background:#F00;
+}
+
+nav#full {
+    position: relative;
+    margin-left: 50%;
 }
 
 a {

@@ -13,6 +13,30 @@
   <div id="app">
     <h1>Radial Menu</h1>
     <p>A knock-off of the menu in the native iOS and Android <a href="http://path.com">Path</a> apps. Works only in WebKit browsers (mobile and desktop).</p>
+    <p>Here&rsquo;s one that goes full circle just for fun:</p>
+    <nav id="full">
+      <a href="#">+</a>
+      <ul>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">7</a></li>
+        <li><a href="#">8</a></li>
+        <li><a href="#">9</a></li>
+        <li><a href="#">10</a></li>
+        <li><a href="#">11</a></li>
+        <li><a href="#">12</a></li>
+      </ul>
+    </nav>
+    <script type="text/javascript" charset="utf-8">
+      var full = new Menu(document.querySelector('#full'), {
+        degrees: 360,
+        offset: 180,
+        radius: 100
+      });
+    </script>
     <h2>How it works</h2>
     <p>HTML markup is kept simple:</p>
     <pre>
@@ -42,7 +66,7 @@ var menu = new Menu(node, {
   offset: -90  
 })</pre>
   </div>
-  <nav>
+  <nav id="arc">
     <a href="#">+</a>
     <ul>
       <li><a href="#">&#x263D;</a></li>
@@ -55,7 +79,7 @@ var menu = new Menu(node, {
   </nav>
   
   <script type="text/javascript" charset="utf-8">
-    var m = new Menu(document.getElementsByTagName('nav')[0], { radius: 130 });
+    var m = new Menu(document.querySelector('#arc'), { radius: 130 });
     var app = document.querySelector('#app');
     if(app.ontouchmove !== undefined){
       app.addEventListener('touchmove', function(){
