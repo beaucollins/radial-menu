@@ -62,7 +62,6 @@ var Menu = function(element, options){
     reverse = "@-webkit-keyframes " + guid + "close { " + reverse + "}" ;
     
     try {
-      console.log(open);
       sheet.insertRule(open, 0);
       sheet.insertRule(reverse, 0);
     } catch(e) {
