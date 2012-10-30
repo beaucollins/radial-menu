@@ -5,7 +5,8 @@ An HTML/CSS/JavaScript implementation of the lovely radial menu in the [Path][] 
 [See the demo][demo] (works best on Safari and Mobile Safari, Chrome does pretty well, Firefox is
 pretty blah, and don't bother with android.)
 
-[demo]: http://beaucollins.github.com/radial-menu [Path]: https://path.com/
+[demo]: http://beaucollins.github.com/radial-menu
+[Path]: https://path.com/
 
 Markup
 -----
